@@ -8,7 +8,7 @@
 body {
   background-color: rgb(0, 0, 0);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* height: 100vh; */
+  height: 100vh;
   width: 100vw;
   max-width: 100%;
   display: flex;
@@ -20,7 +20,6 @@ body {
 
 /* Container styling */
 .container {
-  /* padding: 2rem; */
   width: 100%;
   max-width: 1200px;
   padding: 0 2rem;
@@ -85,6 +84,20 @@ body {
   border-color: orange;
   box-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
 }
+
+.input-group i {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.input-group:focus-within i {
+  color: orange;
+}
+
 
 .input-group input {
   width: 100%;
