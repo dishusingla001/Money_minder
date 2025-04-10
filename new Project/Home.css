@@ -166,6 +166,78 @@ body{
     height: 80vh;
     padding: 20px;
 }
+/* Media Queries for Center Part */
+@media (max-width: 1200px) {
+    .center-part {
+      margin: 30px;
+    }
+    
+    .left h1 {
+      font-size: 60px;
+    }
+    
+    .left p {
+      font-size: 24px;
+    }
+    
+    .right img {
+      height: 60vh;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .center-part {
+      margin: 20px;
+    }
+    
+    .left h1 {
+      font-size: 48px;
+    }
+    
+    .left p {
+      font-size: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .center-part {
+      grid-template-columns: 1fr;
+      margin: 15px;
+    }
+    
+    .left {
+      order: 2;
+      text-align: center;
+      align-items: center;
+    }
+    
+    .right {
+      order: 1;
+    }
+    
+    .right img {
+      height: 40vh;
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .center-part {
+      margin: 10px;
+    }
+    
+    .left h1 {
+      font-size: 36px;
+    }
+    
+    .left p {
+      font-size: 18px;
+    }
+    
+    .right img {
+      height: 30vh;
+    }
+  }
 .center-body-image {
     box-sizing: border-box;
     /* height: 10; */
