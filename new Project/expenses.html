@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="expenses.css">
+</head>
+<body>
+
+    <div class="header-body">
+        <div class="logo-info">
+            <img src="logo-moneyminder.png" alt="Logo">
+        
+            <div id="logo-title">
+                <h1>Money</h1>
+                <br>
+                <h1>Minder</h1>
+            </div>               
+            
+        </div>
+
+        <div class="nav-bar">
+            <nav>
+                <div class="toggle">
+                    <div class="icon"> <i class="fa-solid fa-bars"></i></div>
+                </div> 
+
+                <ul class="nav-bar-list">
+                    <li><a href="demo.html">Home</a></li>
+                    <li><a href="">Expenses</a></li>
+                    <li><a href="">Budget</a></li>
+                    <li><a href="">Expenditure</a></li>
+                    <li><a href="">Help</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="login-button">
+            <a href="">Login</a>
+        </div>
+
+    </div>
+
+    <div id="expense-box">
+        <div class="container">
+            <h2>Enter your Expenses</h2>
+            <form id="expense-form">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+        
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+        
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="groceries">Groceries</option>
+                    <option value="transport">Transport</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="bills">Bills</option>
+                    <option value="others">Others</option>
+                </select>
+        
+                <button type="submit">Add Expense</button>
+            </form>
+        </div>
+    </div>
+    
+    
+    <footer>
+        <div class="footer-container">
+          <div class="footer-columns">
+      
+            <!-- Column 1: Brand Info -->
+            <div class="footer-brand">
+              <img src="logo-moneyminder.png" alt="logo" />
+              <h2>Money Minder</h2>
+              <p class="tagline">Smart money management leads to a wealthier tomorrow.</p>
+            </div>
+      
+            <!-- Column 2: Navigation Links -->
+            <div class="footer-links">
+              <h3>Navigation</h3>
+              <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="my_exp.html">My Expenses</a></li>
+                <li><a href="my_budget.html">My Budget</a></li>
+                <li><a href="my_expenditure.html">Monthly Expenditure</a></li>
+                <li><a href="help.html">Help</a></li>
+              </ul>
+            </div>
+      
+            <!-- Column 3: Support Links -->
+            <div class="footer-support">
+              <h3>Support</h3>
+              <ul>
+                <li><a href="#aboutus">About Us</a></li>
+                <li><a href="#emailus">Email Us</a></li>
+                <li><a href="#faqs">FAQs</a></li>
+              </ul>
+            </div>
+      
+          </div>
+        </div>
+      
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+          <p>&copy; 2025 Money Minder, All Rights Reserved</p>
+          <p>Terms & Conditions</p>
+        </div>
+    </footer>
+    
+    <script>
+      const form = document.getElementById('expense-form');
+      form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+  
+          const amount = document.getElementById('amount').value;
+          const date = document.getElementById('date').value;
+          const category = document.getElementById('category').value;
+  
+          const response = await fetch('/add-expense', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ amount, date, category })
+          });
+  
+          const message = await response.text();
+          alert(message);
+          form.reset();
+      });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="practise.css">
+</head>
+<body>
+  <form id="expense-form">
+    <!-- 1. Date First -->
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date" required>
+  
+    <!-- 2. Amount Second -->
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+  
+    <!-- 3. Category Third -->
+    <label for="category">Category:</label>
+    <select id="category" name="category" required>
+        <option value="groceries">Groceries</option>
+        <option value="transport">Transport</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="bills">Bills</option>
+        <option value="others">Others</option>
+    </select>
+  
+    <!-- Currency stays here (optional to move) -->
+    <label for="currency">Currency:</label>
+    <select id="currency" name="currency">
+        <option value="USD">USD - United States Dollar</option>
+        <option value="EUR">EUR - Euro</option>
+        <option value="GBP">GBP - British Pound</option>
+        <option value="INR">INR - Indian Rupee</option>
+        <option value="JPY">JPY - Japanese Yen</option>
+    </select>
+  
+    <!-- Additional Info -->
+    <label for="info">Additional Info:</label>
+    <textarea id="info" name="info" placeholder="Enter any additional information"></textarea>
+  
+    <button type="submit">Add Expense</button>
+  </form>
+  
+</body>
+</html>

@@ -1,0 +1,28 @@
+/* === Enhanced Expense Form Grid Layout === */
+form {
+  display: grid;
+  grid-template-columns: 1fr; /* default: single column */
+  gap: 20px;
+}
+
+@media (min-width: 600px) {
+  form {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 30px;
+  }
+
+  /* Make full-width items span both columns */
+  form label[for="currency"],
+  form label[for="info"],
+  form select#currency,
+  form textarea,
+  form button {
+      grid-column: span 2;
+  }
+}
+
+/* Make button center-aligned */
+form button {
+  justify-self: center;
+  width: 50%;
+}
