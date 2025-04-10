@@ -135,7 +135,37 @@ body{
 }
 
 /* css for the centre body  */
+.center-part{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 50px;
+}
+.left{
+    padding: 20px;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    color: orange;
+    gap: 20px;
+    font-family: "serif";
+    margin: 10px;
+}
 
+.left h1{
+    font-size: 80px;
+}
+.left p{
+    font-size: 30px;
+}
+.right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.right img{
+    height: 80vh;
+    padding: 20px;
+}
 .center-body-image {
     box-sizing: border-box;
     /* height: 10; */
