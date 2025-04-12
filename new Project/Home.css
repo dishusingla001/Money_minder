@@ -633,4 +633,43 @@ footer {
       gap: 0.5rem;
     }
   }
+  /* User menu styling when logged in */
+.user-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.user-email {
+  font-size: 0.8rem;
+  color: orange;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+#logoutBtn {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+  color: orange;
+}
+
+/* Responsive styles for the user menu */
+@media (max-width: 768px) {
+  .user-menu {
+      margin-right: 20px;
+  }
   
+  .user-email {
+      max-width: 80px;
+  }
+}

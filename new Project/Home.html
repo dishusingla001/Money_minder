@@ -191,39 +191,82 @@
         
     <script src="https://kit.fontawesome.com/d077a0e0a8.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script>
-        $(document).ready(function(){
-            console.log("jQuery ready");
-            $('.icon').click(function(){
-                console.log("Icon clicked");
-                $('#nav-bar-list').toggleClass('active');
-        });
-    });
-    </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const animateOnScroll = (elementId, className) => {
-            const el = document.getElementById(elementId);
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle navigation toggle
+    $('.icon').click(function(){
+        $('.nav-bar-list').toggleClass('active');
+    });
+
+    // Handle blog animations
+    const animateOnScroll = (elementId, className) => {
+        const el = document.getElementById(elementId);
+        if (el) {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         el.classList.add(className);
-                        observer.unobserve(el); // Remove if you want it to animate again on scroll
+                        observer.unobserve(el);
                     }
                 });
             }, {
                 threshold: 0.5
             });
             observer.observe(el);
-        };
+        }
+    };
 
-        animateOnScroll("blog1", "animate");
-        animateOnScroll("blog2", "animate");
-    });
+    animateOnScroll("blog1", "animate");
+    animateOnScroll("blog2", "animate");
+
+    // Handle login/logout functionality
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const loginButtonContainer = document.querySelector('.login-button');
+    
+    if (isLoggedIn) {
+        const userEmail = localStorage.getItem('userEmail');
+        loginButtonContainer.innerHTML = `
+            <div class="user-menu">
+                <span class="user-email">${userEmail}</span>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        `;
+        
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                window.location.reload();
+            });
+        }
+    }
+    
+    console.log('Login state:', isLoggedIn);
+    console.log('Login button container:', loginButtonContainer);
+});
 </script>
 
-
     <script src="demo.js"></script>
+
+<!-- In login.html, update the form submit handler: -->
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Store login state
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userEmail', email);
+
+    // Redirect to home page
+    window.location.href = 'Home.html';
+});
+</script>
 </body>
 </html>
