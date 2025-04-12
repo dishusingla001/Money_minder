@@ -133,7 +133,34 @@ body{
         display: block;
     }
 }
-
+/* Hero Section Styling */
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: radial-gradient(circle at center, #1a1a1a, #000000);
+        }
+        
+        .title {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 2px 10px rgba(255, 165, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
+            }
+        }
 /* css for the centre body  */
 
 .center-body-image {
