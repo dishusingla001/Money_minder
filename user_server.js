@@ -24,6 +24,33 @@ app.post('/signup', (req, res) => {
     });
 });
 
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  console.log("Login attempt with:", email, password); // 👈 Log input
+  console.log("Received:", email, password);
+
+  const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
+  user_db.query(query, [email, password], (err, results) => {
+      if (err) {
+          console.error('Error during login:', err);
+          return res.send('error');
+      }
+
+      console.log("Query result:", results); // 👈 Log query output
+
+      if (results.length > 0) {
+          res.send('success');
+      } else {
+          res.send('fail');
+      }
+  });
+});
+
+
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
