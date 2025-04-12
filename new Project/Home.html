@@ -224,9 +224,51 @@
         animateOnScroll("blog1", "animate");
         animateOnScroll("blog2", "animate");
     });
+
+
 </script>
-
-
-    <script src="demo.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  
+      // Check if server is alive
+      try {
+        const response = await fetch('/status');
+        if (!response.ok) throw new Error();
+      } catch (err) {
+        // If server not responding, assume logout
+        console.warn('Server not responding or restarted — logging out.');
+        localStorage.removeItem('isLoggedIn');
+        isLoggedIn = false;
+      }
+  
+      // Show Login or Logout
+      const loginBtnDiv = document.querySelector('.login-button');
+      if (isLoggedIn) {
+        loginBtnDiv.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
+      } else {
+        loginBtnDiv.innerHTML = `<a href="login.html">Login</a>`;
+      }
+  
+      // Protect expenses link
+      const expensesLink = document.querySelector('a[href="expenses.html"]');
+      if (expensesLink) {
+        expensesLink.addEventListener('click', function (e) {
+          if (!isLoggedIn) {
+            e.preventDefault();
+            alert("You must be logged in to access expenses.");
+            window.location.href = "login.html";
+          }
+        });
+      }
+    });
+  
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'Home.html';
+    }
+  </script>
+  
+      <script src="demo.js"></script>
 </body>
 </html>

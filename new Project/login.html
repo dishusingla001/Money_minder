@@ -67,7 +67,9 @@
                     const text = await response.text();
             
                     if (text === 'success') {
-                        window.location.href = 'Home.html'; // redirect on successful login
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('userEmail', document.getElementById('email').value); // optional
+                        window.location.href = 'Home.html';
                     } else {
                         alert('Invalid email or password'); // show error popup
                     }

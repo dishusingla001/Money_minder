@@ -133,5 +133,28 @@
       });
   </script>
   
+  <script>
+    // ✅ Redirect if not logged in
+    document.addEventListener('DOMContentLoaded', () => {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        if (!isLoggedIn) {
+            alert('You must be logged in to access this page.');
+            window.location.href = 'login.html'; // redirect to login
+        }
+  
+        // 🔄 Optional: Show Logout in the header
+        const loginBtnDiv = document.querySelector('.login-button');
+        if (loginBtnDiv) {
+            loginBtnDiv.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
+        }
+    });
+  
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userEmail');
+        window.location.href = 'login.html';
+    }
+  </script>
+  
 </body>
 </html>
