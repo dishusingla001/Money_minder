@@ -43,7 +43,7 @@
         <div class="container">
             <div class="form-box">
                 <h2>Sign Up</h2>
-                <form action="/signup" method="POST">
+                <form id="signupForm" action="/signup" method="POST">
                     <div class="input-group">
                         <input type="text" name="fullname" placeholder="Full Name" required>
     
@@ -66,6 +66,30 @@
                 </form>
             </div>
         </div>
+
+        <script>
+            const form = document.getElementById('signupForm');
+        
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault(); // prevent default form submission
+        
+                const formData = new FormData(form);
+                const data = new URLSearchParams(formData);
+        
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: data
+                });
+        
+                const text = await response.text();
+                alert(text); // Show popup
+                window.location.reload(); // Refresh the page
+            });
+        </script>
+        
     </body>
     </html>
     
