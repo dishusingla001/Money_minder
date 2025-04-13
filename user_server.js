@@ -12,6 +12,37 @@ const saltRounds = 10;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'new Project')));
 
+app.use(express.json());
+
+app.post('/add-expense', (req, res) => {
+    const { amount, date, category, userEmail } = req.body;
+
+    // Get user_id from email
+    const getUserQuery = 'SELECT id FROM users WHERE email = ?';
+    user_db.query(getUserQuery, [userEmail], (err, results) => {
+        if (err || results.length === 0) {
+            console.error("User lookup failed:", err);
+            return res.status(400).send("Invalid user.");
+        }
+
+        const userId = results[0].id;
+
+        const insertQuery = `INSERT INTO expenses (amount, date, category, user_id) VALUES (?, ?, ?, ?)`;
+        user_db.query(insertQuery, [amount, date, category, userId], (err) => {
+            if (err) {
+                console.error("Error inserting expense:", err);
+                return res.status(500).send("Error saving expense.");
+            }
+
+            res.send("Expense added successfully.");
+        });
+    });
+});
+
+
+
+
+
 // Route to handle signup (with hashing)
 app.post('/signup', async (req, res) => {
     const { fullname, email, password } = req.body;
@@ -59,6 +90,57 @@ app.post('/login', (req, res) => {
         }
     });
 });
+
+
+// Utility to get current month range
+function getCurrentMonthRange() {
+  const now = new Date();
+  const firstDay = `${now.getFullYear()}-${now.getMonth() + 1}-01`;
+  const lastDay = `${now.getFullYear()}-${now.getMonth() + 1}-31`;
+  return [firstDay, lastDay];
+}
+
+app.get('/api/stats', (req, res) => {
+    const email = req.query.userEmail;
+
+    if (!email) return res.status(400).json({ error: 'Missing email' });
+
+    const getUserIdQuery = 'SELECT id FROM users WHERE email = ?';
+    user_db.query(getUserIdQuery, [email], (err, results) => {
+        if (err || results.length === 0) {
+            console.error("User lookup failed:", err);
+            return res.status(400).json({ error: 'Invalid user' });
+        }
+
+        const userId = results[0].id;
+        const [startDate, endDate] = getCurrentMonthRange();
+
+        const statsQuery = `
+            SELECT IFNULL(SUM(amount), 0) as totalSpent
+            FROM expenses 
+            WHERE user_id = ? AND date BETWEEN ? AND ?
+        `;
+
+        user_db.query(statsQuery, [userId, startDate, endDate], (err, results) => {
+            if (err) {
+                console.error("Stats fetch error:", err);
+                return res.status(500).json({ error: "Database error" });
+            }
+
+            const totalSpent = results[0].totalSpent;
+            const budget = 2000;
+            const percentUsed = Math.round((totalSpent / budget) * 100);
+            const remaining = budget - totalSpent;
+
+            res.json({
+                totalSpent: totalSpent.toFixed(2),
+                remaining: remaining.toFixed(2),
+                percentUsed
+            });
+        });
+    });
+});
+
 
 app.get('/status', (req, res) => {
     res.send('ok'); // confirm server is alive

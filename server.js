@@ -23,6 +23,9 @@ db.connect(err => {
     console.log("Connected to MySQL");
 });
 
+
+
+
 // POST endpoint to add expense
 app.post("/add-expense", (req, res) => {
     const { amount, date, category } = req.body;

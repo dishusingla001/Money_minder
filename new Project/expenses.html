@@ -119,13 +119,16 @@
           const date = document.getElementById('date').value;
           const category = document.getElementById('category').value;
   
+          const userEmail = localStorage.getItem('userEmail');
+
           const response = await fetch('/add-expense', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ amount, date, category })
+              body: JSON.stringify({ amount, date, category, userEmail })
           });
+
   
           const message = await response.text();
           alert(message);
