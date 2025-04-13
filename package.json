@@ -1,7 +1,7 @@
 {
-  "name": "diya-zip",
+  "name": "money_minder",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "user_server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -12,7 +12,8 @@
   "dependencies": {
     "body-parser": "^2.2.0",
     "express": "^5.1.0",
-    "mysql": "^2.18.1"
+    "mysql2": "^2.3.3",  
+    
   },
   "description": ""
 }

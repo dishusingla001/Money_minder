@@ -256,14 +256,17 @@ app.get('/api/last-6-days', (req, res) => {
         const userId = results[0].id;
 
         const query = `
-            SELECT 
-                DATE(date) as day, 
-                SUM(amount) as total 
-            FROM expenses 
-            WHERE user_id = ? AND date >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
-            GROUP BY DATE(date)
-            ORDER BY day ASC
+        SELECT 
+            DATE(date) as day, 
+            SUM(amount) as total 
+        FROM expenses 
+        WHERE user_id = ? AND date >= DATE_SUB(CURDATE(), INTERVAL 5 DAY)
+        GROUP BY day
+        ORDER BY day ASC
         `;
+
+        // Add this after your database query
+console.log("User query results:", results);
 
         user_db.query(query, [userId], (err, results) => {
             if (err) {
