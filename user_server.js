@@ -132,10 +132,8 @@ app.get('/api/stats', (req, res) => {
             const percentUsed = Math.round((totalSpent / budget) * 100);
             const remaining = budget - totalSpent;
 
-            res.json({
-                totalSpent: totalSpent.toFixed(2),
-                remaining: remaining.toFixed(2),
-                percentUsed
+            res.json({ 
+                totalSpent: totalSpent // Returns as raw number
             });
         });
     });
@@ -164,7 +162,7 @@ app.get('/api/total-spent', (req, res) => {
         console.log(`Fetching expenses for user ID: ${userId}`);
 
         const totalQuery = `
-            SELECT IFNULL(CAST(SUM(amount) AS DECIMAL(10,2)), 0) AS totalSpentAllTime
+            SELECT IFNULL(SUM(amount), 0) AS totalSpentAllTime
             FROM expenses
             WHERE user_id = ?
         `;
@@ -177,40 +175,81 @@ app.get('/api/total-spent', (req, res) => {
                     details: err.message 
                 });
             }
-        
+
             console.log("Raw query results:", expenseResults);
-        
+
+            let rawValue = expenseResults?.[0]?.totalSpentAllTime;
+            console.log("💡 Raw totalSpent value:", rawValue, typeof rawValue);
+
             let totalSpent = 0;
-        
-            if (expenseResults && expenseResults[0]) {
-                let raw = expenseResults[0].totalSpentAllTime;
-        
-                console.log("Raw totalSpent value from DB:", raw, typeof raw);
-        
-                // ✅ Properly handle all possible types
-                if (Buffer.isBuffer(raw)) {
-                    totalSpent = parseFloat(raw.toString());
-                } else if (typeof raw === 'string') {
-                    totalSpent = parseFloat(raw);
-                } else if (typeof raw === 'number') {
-                    totalSpent = raw;
-                }
-        
-                if (isNaN(totalSpent)) {
-                    console.warn("⚠️ totalSpent is NaN — resetting to 0");
-                    totalSpent = 0;
-                }
+
+            if (Buffer.isBuffer(rawValue)) {
+                totalSpent = parseFloat(rawValue.toString());
+            } else if (typeof rawValue === 'string') {
+                totalSpent = parseFloat(rawValue);
+            } else if (typeof rawValue === 'number') {
+                totalSpent = rawValue;
             }
-        
-            const formattedValue = totalSpent.toFixed(2); // Now it's always a number
-        
-            res.json({ totalSpent: formattedValue });
+
+            if (isNaN(totalSpent)) {
+                console.warn("⚠️ totalSpent is NaN — resetting to 0");
+                totalSpent = 0;
+            }
+
+            res.json({ totalSpent: totalSpent.toFixed(2) });
         });
-        
     });
 });
 
     
+app.get('/api/last-expense', (req, res) => {
+    const email = req.query.userEmail;
+
+    if (!email) return res.status(400).json({ error: 'Missing email' });
+
+    const getUserIdQuery = 'SELECT id FROM users WHERE email = ?';
+    user_db.query(getUserIdQuery, [email], (err, results) => {
+        if (err || results.length === 0) {
+            console.error("User lookup failed:", err);
+            return res.status(400).json({ error: 'Invalid user' });
+        }
+
+        const userId = results[0].id;
+
+        const lastExpenseQuery = `
+            SELECT amount, DATE_FORMAT(date, '%Y-%m-%d') as formattedDate 
+            FROM expenses 
+            WHERE user_id = ? 
+            ORDER BY date DESC 
+            LIMIT 1
+        `;
+
+        user_db.query(lastExpenseQuery, [userId], (err, expenseResults) => {
+            if (err) {
+                console.error("Last expense fetch error:", err);
+                return res.status(500).json({ error: "Database error" });
+            }
+
+            if (expenseResults.length === 0) {
+                return res.json({ amount: 0, formattedDate: "No data" });
+            }
+
+            const { amount, formattedDate } = expenseResults[0];
+            res.json({ amount, date: formattedDate });
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
     app.get('/status', (req, res) => {
         res.send('ok'); // confirm server is alive
     });

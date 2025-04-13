@@ -58,9 +58,9 @@
     </div>
     
       <div class="stat-card">
-          <div class="stat-title">Budget Status</div>
-          <div class="stat-value">68%</div>
-          <div class="stat-change">$754.33 remaining</div>
+          <div class="stat-title">Last Entry</div>
+          <div class="stat-value">1500</div>
+          <div class="stat-change">Date</div>
       </div>
   </div>
 
@@ -355,6 +355,24 @@ fetch(`/api/total-spent?userEmail=${encodeURIComponent(userEmail)}`)
   .catch(err => {
     console.error("Error loading all-time spending:", err);
   });
+
+
+
+// 👇 Fetch last expense entry
+fetch(`/api/last-expense?userEmail=${encodeURIComponent(userEmail)}`)
+  .then(res => res.json())
+  .then(data => {
+    const lastEntryAmount = document.querySelectorAll('.stat-value')[1]; // 2nd .stat-value
+    const lastEntryDate = document.querySelectorAll('.stat-change')[1]; // 2nd .stat-change
+
+    lastEntryAmount.textContent = `$${data.amount}`;
+    lastEntryDate.textContent = data.date;
+  })
+  .catch(err => {
+    console.error("Error loading last expense entry:", err);
+  });
+
+
 
 </script>
 
