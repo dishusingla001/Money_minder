@@ -57,54 +57,29 @@
         <div class="stat-change">Lifetime spending</div>
     </div>
     
-      <div class="stat-card">
-          <div class="stat-title">Last Entry</div>
-          <div class="stat-value">1500</div>
-          <div class="stat-change">Date</div>
-      </div>
+    <div class="stat-card">
+      <div class="stat-title">Last Entry</div>
+      <div class="stat-value">1500</div>
+      <div class="stat-change">Date</div>
+    </div>
+    
   </div>
 
   <div class="chart-section">
     <div class="tab-container">
-        <div class="tab active">Monthly Reports</div>
+      <div class="tab active">Monthly Reports</div>
     </div>
-
+  
     <div id="monthlyChartSection">
-        <div class="chart-header">
-            <div class="chart-title">Monthly Spending Overview</div>
-            <select id="yearSelect" onchange="updateMonthlyChart()">
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-            </select>
-        </div>
-        <div class="chart-container">
-            <canvas id="monthlySpendingChart"></canvas>
-        </div>
-
-        <div class="chart-header">
-            <div class="chart-title">Monthly Category Breakdown</div>
-            <select id="monthSelect" onchange="updateCategoryChart()">
-                <option value="0">January</option>
-                <option value="1">February</option>
-                <option value="2">March</option>
-                <option value="3" selected>April</option>
-                <option value="4">May</option>
-                <option value="5">June</option>
-                <option value="6">July</option>
-                <option value="7">August</option>
-                <option value="8">September</option>
-                <option value="9">October</option>
-                <option value="10">November</option>
-                <option value="11">December</option>
-            </select>
-        </div>
-        <div class="chart-container">
-            <canvas id="categoryChart"></canvas>
-        </div>
+      <div class="chart-header">
+        <div class="chart-title">Daily Spending Overview</div>
+      </div>
+      <div class="chart-container">
+        <canvas id="monthlySpendingChart"></canvas>
+      </div>
     </div>
-</div>
-
+  </div>
+  
 
 <!-- <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -146,190 +121,7 @@
 
 
 <script>
-  // Sample data
-  const monthlyData = {
-      2025: [1150.25, 1320.80, 1280.45, 1245.67, 0, 0, 0, 0, 0, 0, 0, 0],
-      2024: [1050.20, 1100.50, 1350.75, 1200.30, 1275.80, 1340.20, 1090.60, 1175.40, 1280.90, 1320.45, 1180.35, 1390.75],
-      2023: [950.50, 975.30, 1100.20, 1050.40, 1150.60, 1200.30, 980.75, 1040.20, 1120.45, 1170.30, 1090.60, 1250.80]
-  };
-
-  const categoryData = {
-      2025: [
-          // January
-          { Food: 380.50, Rent: 800, Transport: 115.20, Entertainment: 75.30, Utilities: 80 },
-          // February
-          { Food: 410.30, Rent: 800, Transport: 130.75, Entertainment: 85.45, Utilities: 95.20 },
-          // March
-          { Food: 390.45, Rent: 800, Transport: 120.60, Entertainment: 90.25, Utilities: 80.15 },
-          // April
-          { Food: 420.50, Rent: 800, Transport: 125.75, Entertainment: 95.42, Utilities: 85 },
-          // May - December (empty placeholders)
-          {}, {}, {}, {}, {}, {}, {}, {}
-      ],
-      2024: [
-          { Food: 350.20, Rent: 750, Transport: 105.50, Entertainment: 65.30, Utilities: 75 },
-          { Food: 370.50, Rent: 750, Transport: 110.80, Entertainment: 70.20, Utilities: 80 },
-          { Food: 390.60, Rent: 750, Transport: 120.30, Entertainment: 80.45, Utilities: 78.50 },
-          { Food: 380.40, Rent: 750, Transport: 115.60, Entertainment: 75.90, Utilities: 80.30 },
-          { Food: 395.50, Rent: 750, Transport: 125.70, Entertainment: 85.60, Utilities: 82 },
-          { Food: 410.40, Rent: 750, Transport: 130.50, Entertainment: 90.20, Utilities: 85.10 },
-          { Food: 380.30, Rent: 750, Transport: 110.40, Entertainment: 70.80, Utilities: 78.90 },
-          { Food: 385.60, Rent: 750, Transport: 115.30, Entertainment: 75.40, Utilities: 80.20 },
-          { Food: 400.50, Rent: 750, Transport: 120.80, Entertainment: 85.30, Utilities: 83.50 },
-          { Food: 410.70, Rent: 750, Transport: 125.60, Entertainment: 90.45, Utilities: 85.60 },
-          { Food: 390.50, Rent: 750, Transport: 115.40, Entertainment: 80.35, Utilities: 82.10 },
-          { Food: 420.80, Rent: 750, Transport: 135.70, Entertainment: 95.25, Utilities: 90 }
-      ],
-      2023: [
-          { Food: 320.30, Rent: 700, Transport: 95.40, Entertainment: 60.20, Utilities: 70.60 },
-          { Food: 325.50, Rent: 700, Transport: 100.30, Entertainment: 65.50, Utilities: 72 },
-          { Food: 350.60, Rent: 700, Transport: 110.40, Entertainment: 70.80, Utilities: 75.40 },
-          { Food: 340.50, Rent: 700, Transport: 105.60, Entertainment: 65.90, Utilities: 73.30 },
-          { Food: 360.40, Rent: 700, Transport: 115.70, Entertainment: 75.60, Utilities: 76 },
-          { Food: 370.30, Rent: 700, Transport: 120.50, Entertainment: 80.20, Utilities: 78.10 },
-          { Food: 330.40, Rent: 700, Transport: 100.40, Entertainment: 60.80, Utilities: 72.90 },
-          { Food: 340.60, Rent: 700, Transport: 105.30, Entertainment: 65.40, Utilities: 74.20 },
-          { Food: 350.50, Rent: 700, Transport: 110.80, Entertainment: 75.30, Utilities: 76.50 },
-          { Food: 360.70, Rent: 700, Transport: 115.60, Entertainment: 80.45, Utilities: 78.60 },
-          { Food: 345.50, Rent: 700, Transport: 105.40, Entertainment: 70.35, Utilities: 75.10 },
-          { Food: 375.80, Rent: 700, Transport: 125.70, Entertainment: 85.25, Utilities: 80 }
-      ]
-  };
-
-  // Initialize charts on page load
-  window.onload = function() {
-      initializeMonthlyChart();
-      initializeCategoryChart();
-  };
-
-  function initializeMonthlyChart() {
-      const ctx = document.getElementById('monthlySpendingChart').getContext('2d');
-      window.monthlyChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-              datasets: [{
-                  label: 'Monthly Spending',
-                  data: monthlyData[2025],
-                  backgroundColor: '#f0a500',
-                  borderColor: '#f0a500',
-                  borderWidth: 1,
-                  borderRadius: 5
-              }]
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                  y: {
-                      beginAtZero: true,
-                      grid: {
-                          color: 'rgba(255, 255, 255, 0.1)'
-                      },
-                      ticks: {
-                          color: '#aaa',
-                          callback: function(value) {
-                              return '$' + value;
-                          }
-                      }
-                  },
-                  x: {
-                      grid: {
-                          color: 'rgba(255, 255, 255, 0.1)'
-                      },
-                      ticks: {
-                          color: '#aaa'
-                      }
-                  }
-              },
-              plugins: {
-                  legend: {
-                      display: false
-                  },
-                  tooltip: {
-                      callbacks: {
-                          label: function(context) {
-                              return '$' + context.raw.toFixed(2);
-                          }
-                      }
-                  }
-              }
-          }
-      });
-  }
-
-  function updateMonthlyChart() {
-      const year = document.getElementById('yearSelect').value;
-      window.monthlyChart.data.datasets[0].data = monthlyData[year];
-      window.monthlyChart.update();
-  }
-
-  function initializeCategoryChart() {
-      const ctx = document.getElementById('categoryChart').getContext('2d');
-      const month = document.getElementById('monthSelect').value;
-      const categories = Object.keys(categoryData[2025][month]);
-      const values = Object.values(categoryData[2025][month]);
-      
-      window.categoryChart = new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-              labels: categories,
-              datasets: [{
-                  data: values,
-                  backgroundColor: [
-                      '#f0a500', // Food
-                      '#e63946', // Rent
-                      '#2a9d8f', // Transport
-                      '#8338ec', // Entertainment
-                      '#3a86ff'  // Utilities
-                  ],
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                  legend: {
-                      position: 'right',
-                      labels: {
-                          color: '#fff',
-                          font: {
-                              size: 14
-                          }
-                      }
-                  },
-                  tooltip: {
-                      callbacks: {
-                          label: function(context) {
-                              const label = context.label || '';
-                              const value = context.raw;
-                              const total = context.dataset.data.reduce((acc, data) => acc + data, 0);
-                              const percentage = Math.round((value / total) * 100);
-                              return `${label}: $${value} (${percentage}%)`;
-
-                          }
-                      }
-                  }
-              }
-          }
-      });
-  }
-
-  function updateCategoryChart() {
-      const month = document.getElementById('monthSelect').value;
-      const year = document.getElementById('yearSelect').value;
-      
-      if (categoryData[year] && categoryData[year][month]) {
-          const categories = Object.keys(categoryData[year][month]);
-          const values = Object.values(categoryData[year][month]);
-          
-          window.categoryChart.data.labels = categories;
-          window.categoryChart.data.datasets[0].data = values;
-          window.categoryChart.update();
-      }
-  }
-
+ 
   // Fetch stats from backend and update the stats container
 // Fetch stats from backend using userEmail
 const userEmail = localStorage.getItem('userEmail');
@@ -358,21 +150,85 @@ fetch(`/api/total-spent?userEmail=${encodeURIComponent(userEmail)}`)
 
 
 
-// 👇 Fetch last expense entry
-fetch(`/api/last-expense?userEmail=${encodeURIComponent(userEmail)}`)
+// Get all stat cards
+const statCards = document.querySelectorAll('.stat-card');
+
+statCards.forEach(card => {
+  const title = card.querySelector('.stat-title');
+  if (title && title.textContent.includes('Last Entry')) {
+    fetch(`/api/last-expense?userEmail=${encodeURIComponent(userEmail)}`)
+      .then(res => res.json())
+      .then(data => {
+        const valueElem = card.querySelector('.stat-value');
+        const dateElem = card.querySelector('.stat-change');
+        valueElem.textContent = `$${data.amount}`;
+        dateElem.textContent = data.date;
+      })
+      .catch(err => {
+        console.error("Error loading last expense entry:", err);
+      });
+  }
+});
+
+
+fetch(`/api/last-6-days?userEmail=${encodeURIComponent(userEmail)}`)
   .then(res => res.json())
   .then(data => {
-    const lastEntryAmount = document.querySelectorAll('.stat-value')[1]; // 2nd .stat-value
-    const lastEntryDate = document.querySelectorAll('.stat-change')[1]; // 2nd .stat-change
+    const labels = data.map(entry => entry.day);
+    const values = data.map(entry => parseFloat(entry.total));
 
-    lastEntryAmount.textContent = `$${data.amount}`;
-    lastEntryDate.textContent = data.date;
+    const ctx = document.getElementById('last6DaysChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Daily Spending',
+          data: values,
+          backgroundColor: '#3a86ff',
+          borderRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: '#aaa',
+              callback: value => '$' + value
+            },
+            grid: {
+              color: 'rgba(255,255,255,0.1)'
+            }
+          },
+          x: {
+            ticks: {
+              color: '#aaa'
+            },
+            grid: {
+              color: 'rgba(255,255,255,0.1)'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: context => `$${context.raw.toFixed(2)}`
+            }
+          }
+        }
+      }
+    });
   })
   .catch(err => {
-    console.error("Error loading last expense entry:", err);
+    console.error("Failed to load last 6 days data:", err);
   });
-
-
 
 </script>
 

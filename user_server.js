@@ -201,7 +201,6 @@ app.get('/api/total-spent', (req, res) => {
     });
 });
 
-    
 app.get('/api/last-expense', (req, res) => {
     const email = req.query.userEmail;
 
@@ -217,7 +216,7 @@ app.get('/api/last-expense', (req, res) => {
         const userId = results[0].id;
 
         const lastExpenseQuery = `
-            SELECT amount, DATE_FORMAT(date, '%Y-%m-%d') as formattedDate 
+            SELECT amount, DATE_FORMAT(date, '%Y-%m-%d') AS date 
             FROM expenses 
             WHERE user_id = ? 
             ORDER BY date DESC 
@@ -231,18 +230,51 @@ app.get('/api/last-expense', (req, res) => {
             }
 
             if (expenseResults.length === 0) {
-                return res.json({ amount: 0, formattedDate: "No data" });
+                return res.json({ amount: 0, date: "No data" });
             }
 
-            const { amount, formattedDate } = expenseResults[0];
-            res.json({ amount, date: formattedDate });
+            const { amount, date } = expenseResults[0];
+            res.json({ amount, date });
         });
     });
 });
 
 
 
+app.get('/api/last-6-days', (req, res) => {
+    const email = req.query.userEmail;
 
+    if (!email) return res.status(400).json({ error: 'Missing email' });
+
+    const getUserIdQuery = 'SELECT id FROM users WHERE email = ?';
+    user_db.query(getUserIdQuery, [email], (err, results) => {
+        if (err || results.length === 0) {
+            console.error("User lookup failed:", err);
+            return res.status(400).json({ error: 'Invalid user' });
+        }
+
+        const userId = results[0].id;
+
+        const query = `
+            SELECT 
+                DATE(date) as day, 
+                SUM(amount) as total 
+            FROM expenses 
+            WHERE user_id = ? AND date >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+            GROUP BY DATE(date)
+            ORDER BY day ASC
+        `;
+
+        user_db.query(query, [userId], (err, results) => {
+            if (err) {
+                console.error("6-day chart fetch error:", err);
+                return res.status(500).json({ error: "Database error" });
+            }
+
+            res.json(results); // [{ day: '2025-04-08', total: 500 }, ...]
+        });
+    });
+});
 
 
 
