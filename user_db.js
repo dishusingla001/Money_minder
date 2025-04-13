@@ -1,10 +1,11 @@
 const mysql = require('mysql2');
 
 const user_db = mysql.createConnection({
-    host: 'mysql.railway.internal',
-    user: 'root',
-    password: 'JYniJnVchKPhEdKXcHbstWFqnvgPeixq',
-    database: 'railway',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     // Add these configuration options:
     insecureAuth: true,
     flags: '-FOUND_ROWS',
