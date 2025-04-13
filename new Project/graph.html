@@ -52,10 +52,11 @@
 
     <div class="stats-container">
       <div class="stat-card">
-          <div class="stat-title">Total Spent This Month</div>
-          <div class="stat-value">$1,245.67</div>
-          <div class="stat-change increase">↑ 12.5% vs last month</div>
-      </div>
+        <div class="stat-title">Total Spent (All Time)</div>
+        <div class="stat-value" id="allTimeSpent">$0.00</div>
+        <div class="stat-change">Lifetime spending</div>
+    </div>
+    
       <div class="stat-card">
           <div class="stat-title">Budget Status</div>
           <div class="stat-value">68%</div>
@@ -344,6 +345,16 @@ fetch(`/api/stats?userEmail=${encodeURIComponent(userEmail)}`)
     console.error("Failed to load stats:", err);
   });
 
+
+// 👇 Fetch all-time spent from backend
+fetch(`/api/total-spent?userEmail=${encodeURIComponent(userEmail)}`)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('allTimeSpent').textContent = `$${data.totalSpent}`;
+  })
+  .catch(err => {
+    console.error("Error loading all-time spending:", err);
+  });
 
 </script>
 
